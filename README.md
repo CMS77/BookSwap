@@ -1,5 +1,19 @@
 # 📚 BookSwap 
 
+## 👩‍💻 Author  
+
+**Degree:** Computer Engineering  
+
+**Academic Year / Semester:** 2025–2026  
+
+**Course Unit:** Web Programming  
+**Professor:** Alexandre Pereira  
+
+**Student:**  
+Carolyne Silva — 20210046 
+
+---
+
 ## 📖 Introduction  
 This project consists of the development of an **online platform for lending books between users**.  
 The main idea is to allow individuals to share books they own with other interested users, promoting **access to reading** and encouraging **collaboration within the community**.
@@ -35,8 +49,3 @@ This project is a **web application developed in an academic context**, focusing
 - User interaction and usability  
 - Information organization and management  
 - Practical application of web development concepts  
-
----
-
-## 👩‍💻 Author  
-Carolyne Silva - 20210046
