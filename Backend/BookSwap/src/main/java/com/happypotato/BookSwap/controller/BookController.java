@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.happypotato.BookSwap.repository.BookRepository;
 import com.happypotato.BookSwap.exception.NotFoundException;
 import com.happypotato.BookSwap.model.Book;
-import com.happypotato.BookSwap.model.User;
 
 @RestController
 public class BookController {

@@ -2,7 +2,7 @@ document.getElementById('navbar').innerHTML = `
 <nav class="sidebar">
     <img src="img/logo.png" class="logo">
     <div class="nav-links">
-        <a href="HappyStore.html">Home</a>
+        <a href="Home.html">Home</a>
         <a href="HowItWorks.html">How it Works</a>
         <a href="BrowserBook.html">Browser Book</a>
         <a href="Login.html">Login</a>
@@ -15,7 +15,7 @@ document.getElementById('navbar').innerHTML = `
 
 //HP: Funtion that makes logo turns to button
 document.querySelector('.logo').addEventListener('click', function() {
-    window.location.href = 'HappyStore.html';
+    window.location.href = 'Home.html';
 });
 
 document.getElementById('footer').innerHTML = `
@@ -31,3 +31,23 @@ document.querySelectorAll('.card-flip').forEach(card => {
         card.classList.toggle('flipped');
     });
 });
+//Autenticação
+function checkAuth() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'Login.html';
+    }
+    return token;
+}
+// adiciona o token a qualquer fetch autenticado
+function authFetch(url, options = {}) {
+    const token = localStorage.getItem('token');
+    return fetch(url, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            ...options.headers
+        }
+    });
+}

@@ -22,23 +22,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private long id;
+
     private String name;
+
+    @Column(unique = true, nullable = false)
     private String username;
-    private byte[] password;
+
+    private String password;
     private byte[] fotoUser;
     private String localizacao;
     private String bio;
-    private double rating;
+    private Double rating = 0.0;
+    
     @OneToMany(mappedBy = "user")
     private Set<Book> books = new HashSet<>();
-    
 
     public User() {
 
     }
 
-    public User(String name, String username, byte[] password, byte[] fotoUser, String localizacao, String bio,
-            double rating) {
+    public User(String name, String username, String password, byte[] fotoUser, String localizacao, String bio,
+            Double rating) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -59,8 +63,9 @@ public class User {
     public String getUsername() {
         return username;
     }
+
     @JsonIgnore
-    public byte[] getPassword() {
+    public String getPassword() {
         return password;
     }
 
@@ -76,7 +81,7 @@ public class User {
         return bio;
     }
 
-    public double getRating() {
+    public Double getRating() {
         return rating;
     }
 
@@ -92,7 +97,7 @@ public class User {
         this.username = username;
     }
 
-    public void setPassword(byte[] password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -108,9 +113,8 @@ public class User {
         this.bio = bio;
     }
 
-    public void setRating(double rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
-    
 
 }
