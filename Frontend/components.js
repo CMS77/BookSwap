@@ -20,3 +20,9 @@ document.getElementById('footer').innerHTML = `
     <a href="safety.html">Safety Guidelines</a>
     <p>© 2025 HappyPotato BookSwap 🥔</p>
 </footer>`;
+
+document.querySelectorAll('.card-flip').forEach(card => {
+    card.addEventListener('click', () => {
+        card.classList.toggle('flipped');
+    });
+});

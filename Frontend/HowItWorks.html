@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HappyPotato BookSwap</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
 <body>
     <div id="navbar"></div>
 
@@ -5,53 +15,71 @@
         <h2>How it Works</h2>
 
         <section class="cards">
-            <div class="card">
-                <span>📚</span>
-                <h3>Lend your books</h3>
-                <p>Share the books you've already read with other members of the community.</p>
-            </div>
-            <div class="card">
-                <span>🔍</span>
-                <h3>Discover new reads</h3>
-                <p>Browse books available from other readers and find your next favourite.</p>
-            </div>
-            <div class="card">
-                <span>🤝</span>
-                <h3>Meet & Exchange</h3>
-                <p>Arrange a safe meeting in a public place and swap books in person.</p>
-            </div>
-        </section>
 
-        <section class="how-it-works">
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <p>Create your account</p>
-                </div>
-                <div class="step-arrow">→</div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <p>Add your books</p>
-                </div>
-                <div class="step-arrow">→</div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <p>Browse & Request</p>
-                </div>
-                <div class="step-arrow">→</div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <p>Meet & Exchange</p>
-                </div>
-                <div class="step-arrow">→</div>
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <p>Read & Return</p>
+            <div class="card-flip">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <span>📚</span>
+                        <h3>Lend your books</h3>
+                        <p>Share the books you've already read with other members of the community.</p>
+                        <small>Click to see how →</small>
+                    </div>
+                    <div class="card-back">
+                        <div class="steps-mini">
+                            <div class="step-mini">1 - Create your profile</div>
+                            <div class="step-mini highlight">2 - List the books you want to share</div>
+                            <div class="step-mini">3 - Receive requests from readers</div>
+                            <div class="step-mini">4 - Arrange a meeting</div>
+                            <div class="step-mini">5 - Get your book back after reading</div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="card-flip">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <span>🔍</span>
+                        <h3>Discover new reads</h3>
+                        <p>Browse books available from other readers and find your next favourite.</p>
+                        <small>Click to see how →</small>
+                    </div>
+                    <div class="card-back">
+                        <div class="steps-mini">
+                            <div class="step-mini">1 - Search for your favorite books</div>
+                            <div class="step-mini highlight">2 - Request a book you like</div>
+                            <div class="step-mini">3 - Meet the owner to collect it</div>
+                            <div class="step-mini">4 - Enjoy reading and return it later</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-flip">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <span>🤝</span>
+                        <h3>Meet & Exchange</h3>
+                        <p>Arrange a safe meeting in a public place and swap books in person.</p>
+                        <small>Click to see how →</small>
+                    </div>
+                    <div class="card-back">
+                        <div class="steps-mini">
+                            <div class="step-mini">1 - Match with another reader</div>
+                            <div class="step-mini">2 - Agree on a time and public place</div>
+                            <div class="step-mini">3 - Bring the book to exchange</div>
+                            <div class="step-mini highlight">4 - Confirm the swap in the app</div>
+                            <div class="step-mini">5 - Stay connected for future exchanges</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </main>
 
     <div id="footer"></div>
     <script src="components.js"></script>
 </body>
+
+</html>
