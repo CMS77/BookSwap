@@ -13,6 +13,11 @@ document.getElementById('navbar').innerHTML = `
     </div>
 </nav>`;
 
+//HP: Funtion that makes logo turns to button
+document.querySelector('.logo').addEventListener('click', function() {
+    window.location.href = 'HappyStore.html';
+});
+
 document.getElementById('footer').innerHTML = `
 <footer class="footer">
     <a href="terms.html">Terms of Service</a>
