@@ -42,14 +42,14 @@ public class AuthController {
         Optional<User> userOpt = userRepository.findByUsername(username);
         //User user = userRepository.getById(userOpt.get().getId());
         if (userOpt.isEmpty() || !encoder.matches(password, userOpt.get().getPassword())) {
-            return ResponseEntity.status(401).body("Ivalid Credentials");
+            return ResponseEntity.status(401).body("Invalid Credentials");
         }
         String token = jwtUtil.generateToken(username);
-        System.out.println("USER FOUND: " + userOpt.isPresent());
+        //System.out.println("USER FOUND: " + userOpt.isPresent());
 
         if (userOpt.isPresent()) {
-            System.out.println("RAW PASSWORD: " + password);
-            System.out.println("DB PASSWORD: " + userOpt.get().getPassword());
+            //System.out.println("RAW PASSWORD: " + password);
+            //System.out.println("DB PASSWORD: " + userOpt.get().getPassword());
             System.out.println("MATCHES: " + encoder.matches(password, userOpt.get().getPassword()));
         }
         return ResponseEntity.ok(Map.of("token", token));

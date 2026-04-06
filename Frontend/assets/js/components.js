@@ -1,11 +1,11 @@
 document.getElementById('navbar').innerHTML = `
 <nav class="sidebar">
-    <img src="img/logo.png" class="logo">
+    <img src="assets/img/logo.png" class="logo">
     <div class="nav-links">
-        <a href="Home.html">Home</a>
-        <a href="HowItWorks.html">How it Works</a>
-        <a href="BrowserBook.html">Browser Book</a>
-        <a href="Login.html">Login</a>
+        <a href="index.html">Home</a>
+        <a href="how-it-works.html">How it Works</a>
+        <a href="browse.html">Browse Books</a>
+        <a href="login.html">Login</a>
     </div>
     <div class="search-bar">
         <input type="text" placeholder="Search...">
@@ -26,19 +26,19 @@ document.querySelectorAll('.card-flip').forEach(card => {
         card.classList.toggle('flipped');
     });
 });
-//HP: Funtion that makes logo turns to button
+
 document.querySelector('.logo').addEventListener('click', function() {
-    window.location.href = 'Home.html';
+    window.location.href = 'index.html';
 });
-//Autenticação
+
 function checkAuth() {
     const token = localStorage.getItem('token');
     if (!token) {
-        window.location.href = 'Login.html';
+        window.location.href = 'login.html';
     }
     return token;
 }
-// adiciona o token a qualquer fetch autenticado
+
 function authFetch(url, options = {}) {
     const token = localStorage.getItem('token');
     return fetch(url, {

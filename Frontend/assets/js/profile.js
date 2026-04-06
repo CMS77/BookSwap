@@ -1,14 +1,18 @@
-const {username} = require('./login.js');
+const username = localStorage.getItem('username');
+
+document.addEventListener("DOMContentLoaded", () => {
+    checkAuth();
+    loadUserProfile();
+    changeTab("myBooks");
+});
 
 async function loadUserProfile() {
     try {
-        const response = await fetch("http://localhost:8080/users/" + username, {
+        const response = await authFetch("http://localhost:8080/users/" + username, {
             method: "GET",
-            credentials: "include"
         });
 
         const user = await response.json();
-
 
         document.getElementById("name").innerText = user.name;
         document.querySelector(".username").innerText = "@" + user.username;
@@ -17,11 +21,10 @@ async function loadUserProfile() {
         document.getElementById("bio").value = user.bio || "";
         document.getElementById("location").value = user.location || "";
 
-        if (user.fotoUser) {
+        if (user.profilePhoto) {
             document.querySelector(".profile-photo img").src =
-                "data:image/png;base64," + user.fotoUser;
+                "data:image/png;base64," + user.profilePhoto;
         }
-
     } catch (error) {
         console.error("Error loading profile:", error);
     }
@@ -32,20 +35,15 @@ async function saveProfile() {
     const location = document.getElementById("location").value;
 
     try {
-        await fetch("http://localhost:8080/users/" + username, {
+        await authFetch("http://localhost:8080/users/" + username, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            credentials: "include",
-            body: JSON.stringify({
-                bio,
-                location
-            })
+            body: JSON.stringify({ bio, location })
         });
 
         alert("Profile updated!");
-
     } catch (error) {
         console.error("Error saving profile:", error);
     }
@@ -56,7 +54,7 @@ function changeTab(tabName) {
     const tabs = document.querySelectorAll(".tab");
 
     tabs.forEach(t => t.classList.remove("active"));
-    event.target.classList.add("active");
+    document.querySelector(`.tab[onclick="changeTab('${tabName}')"]`).classList.add("active");
 
     switch (tabName) {
         case "myBooks":
@@ -73,8 +71,3 @@ function changeTab(tabName) {
             break;
     }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadUserProfile();
-    changeTab("myBooks");
-});

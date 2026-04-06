@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Register — HappyPotato BookSwap</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — BookSwap</title>
+    <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -36,34 +37,33 @@
                     <button class="btn-login">Create account</button>
                     <div class="login-divider"><span>or</span></div>
                     <p class="register-link">
-                        Already have an account? <a href="Login.html">Sign in</a>
+                        Already have an account? <a href="login.html">Sign in</a>
                     </p>
                 </div>
             </div>
         </div>
     </main>
     <div id="footer"></div>
-    <script src="components.js"></script>
+    <script src="assets/js/components.js"></script>
     <script>
         document.querySelector('.btn-login').addEventListener('click', async () => {
-
             const name = document.getElementById('name').value.trim();
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
             const confirmPassword = document.getElementById('confirm-password').value.trim();
 
             if (!name || !username || !password || !confirmPassword) {
-                alert('Preenche todos os campos!');
+                alert('Please fill in all fields!');
                 return;
             }
 
             if (password !== confirmPassword) {
-                alert('As passwords não coincidem!');
+                alert('Passwords do not match!');
                 return;
             }
 
             if (password.length < 6) {
-                alert('A password deve ter pelo menos 6 caracteres!');
+                alert('Password must be at least 6 characters!');
                 return;
             }
 
@@ -75,15 +75,14 @@
                 });
 
                 if (response.ok) {
-                    alert('Conta criada com sucesso!');
-                    window.location.href = 'Login.html';
+                    alert('Account created successfully!');
+                    window.location.href = 'login.html';
                 } else {
                     const message = await response.text();
-                    alert(message); // ex: "Username already taken"
+                    alert(message);
                 }
-
             } catch (error) {
-                alert('Erro ao conectar ao servidor. Verifica se o Spring Boot está a correr.');
+                alert('Could not connect to the server.');
             }
         });
     </script>

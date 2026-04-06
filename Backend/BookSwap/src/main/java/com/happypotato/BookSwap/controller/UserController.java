@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.happypotato.BookSwap.model.User;
 import com.happypotato.BookSwap.exception.NotFoundException;
@@ -18,6 +19,7 @@ import com.happypotato.BookSwap.repository.UserRepository;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserRepository repository;
@@ -37,22 +39,15 @@ public class UserController {
         return repository.save(newUser);
     }
 
-    @GetMapping("/{id}")
-    User one(@PathVariable long id) {
-
-        return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.valueOf(id)));
-    }
-
     @PutMapping("/{id}")
     User replaceUser(@RequestBody User newUser, @PathVariable Long id) {
 
         return repository.findById(id)
                 .map(user -> {
                     user.setName(newUser.getName());
-                    user.setFotoUser(newUser.getFotoUser());
+                    user.setProfilePhoto(newUser.getProfilePhoto());
                     user.setBio(newUser.getBio());
-                    user.setLocalizacao(newUser.getLocalizacao());
+                    user.setLocation(newUser.getLocation());
                     return repository.save(user);
                 })
                 .orElseGet(() -> {

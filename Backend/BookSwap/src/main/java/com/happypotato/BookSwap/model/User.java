@@ -3,6 +3,7 @@ package com.happypotato.BookSwap.model;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashSet;
 
@@ -29,8 +30,10 @@ public class User {
     private String username;
 
     private String password;
-    private byte[] fotoUser;
-    private String localizacao;
+    @Column(name = "foto_user")
+    private byte[] profilePhoto;
+    @Column(name = "localizacao")
+    private String location;
     private String bio;
     private Double rating = 0.0;
     
@@ -41,13 +44,13 @@ public class User {
 
     }
 
-    public User(String name, String username, String password, byte[] fotoUser, String localizacao, String bio,
+    public User(String name, String username, String password, byte[] profilePhoto, String location, String bio,
             Double rating) {
         this.name = name;
         this.username = username;
         this.password = password;
-        this.fotoUser = fotoUser;
-        this.localizacao = localizacao;
+        this.profilePhoto = profilePhoto;
+        this.location = location;
         this.bio = bio;
         this.rating = rating;
     }
@@ -63,18 +66,17 @@ public class User {
     public String getUsername() {
         return username;
     }
-
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {
         return password;
     }
 
-    public byte[] getFotoUser() {
-        return fotoUser;
+    public byte[] getProfilePhoto() {
+        return profilePhoto;
     }
 
-    public String getLocalizacao() {
-        return localizacao;
+    public String getLocation() {
+        return location;
     }
 
     public String getBio() {
@@ -101,12 +103,12 @@ public class User {
         this.password = password;
     }
 
-    public void setFotoUser(byte[] fotoUser) {
-        this.fotoUser = fotoUser;
+    public void setProfilePhoto(byte[] profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
-    public void setLocalizacao(String localizacao) {
-        this.localizacao = localizacao;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public void setBio(String bio) {

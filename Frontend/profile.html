@@ -1,26 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>HappyPotato BookSwap</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile — BookSwap</title>
+    <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-
     <div id="navbar"></div>
 
     <main class="content">
-
         <section class="profile-container">
-
-
             <div class="profile-header">
-
                 <div class="profile-photo">
-                    <img src="img/default-user.png" alt="User Photo">
+                    <img src="assets/img/default-user.png" alt="User Photo">
                     <input type="file" id="uploadPhoto">
                 </div>
 
@@ -35,12 +31,12 @@
                     </div>
 
                     <div class="editable-field">
-                        <label>Localização:</label>
-                        <input type="text" id="localizacao">
+                        <label>Location:</label>
+                        <input type="text" id="location">
                     </div>
 
                     <button class="btn-primary" onclick="saveProfile()">
-                        Guardar alterações
+                        Save changes
                     </button>
                 </div>
             </div>
@@ -53,16 +49,14 @@
             </div>
 
             <div class="profile-content" id="tabContent">
-                <p>Carregando...</p>
+                <p>Loading...</p>
             </div>
         </section>
     </main>
 
     <div id="footer"></div>
-
-    <script src="components.js"></script>
-    <script src="profile.js"></script>
-
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/profile.js"></script>
 </body>
 
 </html>

@@ -196,8 +196,6 @@ ol li {
     background-color: #C8DFA8;
 }
 
-/*  cards  */
-
 .cards {
     display: flex;
     flex-direction: row;
@@ -306,13 +304,12 @@ ol li {
     padding-left: 0.55rem;
     border-radius: 0 6px 6px 0;
 }
-/*  Login  */
 
 .login-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 80px - 64px); 
+    min-height: calc(100vh - 80px - 64px);
     padding: 2rem;
 }
 
@@ -441,7 +438,6 @@ ol li {
     text-decoration: underline;
 }
 
-/*user profile*/
 .profile-container {
     max-width: 900px;
     margin: 0 auto;
