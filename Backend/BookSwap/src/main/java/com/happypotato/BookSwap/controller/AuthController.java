@@ -40,7 +40,7 @@ public class AuthController {
         String password = body.get("password");
 
         Optional<User> userOpt = userRepository.findByUsername(username);
-        User user = userRepository.getById(userOpt.get().getId());
+        //User user = userRepository.getById(userOpt.get().getId());
         if (userOpt.isEmpty() || !encoder.matches(password, userOpt.get().getPassword())) {
             return ResponseEntity.status(401).body("Ivalid Credentials");
         }
