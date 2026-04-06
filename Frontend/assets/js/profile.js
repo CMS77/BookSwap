@@ -1,7 +1,7 @@
 const username = localStorage.getItem('username');
 
 document.addEventListener("DOMContentLoaded", () => {
-    checkAuth();
+    if (!checkAuth()) return;
     loadUserProfile();
     changeTab("myBooks");
 });
