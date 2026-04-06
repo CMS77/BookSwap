@@ -13,11 +13,6 @@ document.getElementById('navbar').innerHTML = `
     </div>
 </nav>`;
 
-//HP: Funtion that makes logo turns to button
-document.querySelector('.logo').addEventListener('click', function() {
-    window.location.href = 'Home.html';
-});
-
 document.getElementById('footer').innerHTML = `
 <footer class="footer">
     <a href="terms.html">Terms of Service</a>
@@ -30,6 +25,10 @@ document.querySelectorAll('.card-flip').forEach(card => {
     card.addEventListener('click', () => {
         card.classList.toggle('flipped');
     });
+});
+//HP: Funtion that makes logo turns to button
+document.querySelector('.logo').addEventListener('click', function() {
+    window.location.href = 'Home.html';
 });
 //Autenticação
 function checkAuth() {

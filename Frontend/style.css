@@ -440,3 +440,75 @@ ol li {
 .register-link a:hover {
     text-decoration: underline;
 }
+
+/*user profile*/
+.profile-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.profile-header {
+    display: flex;
+    gap: 30px;
+    background-color: #fff;
+    border: 1.5px solid var(--cor-destaque);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(45, 80, 22, 0.08);
+}
+
+.profile-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.username {
+    color: #5F5E5A;
+}
+
+.rating {
+    color: var(--cor-destaque);
+}
+
+.editable-field {
+    margin-bottom: 10px;
+}
+
+.editable-field input,
+.editable-field textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #C8DFA8;
+}
+
+.profile-nav {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid #C8DFA8;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.tab.active {
+    border-bottom: 3px solid var(--cor-destaque);
+}
+
+.profile-content {
+    padding: 20px;
+    background-color: #fff;
+}

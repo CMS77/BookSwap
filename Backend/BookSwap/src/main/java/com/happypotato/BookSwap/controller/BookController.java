@@ -36,7 +36,7 @@ public class BookController {
     Book one(@PathVariable long id) {
 
         return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(id));
+                .orElseThrow(() -> new NotFoundException(String.valueOf(id)));
     }
 
     @PutMapping("/books/{id}")
@@ -56,7 +56,7 @@ public class BookController {
     @DeleteMapping("/books/{id}")
     String deleteBook(@PathVariable Long id) {
         Book book = repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(id));
+                .orElseThrow(() -> new NotFoundException(String.valueOf(id)));
         repository.deleteById(id);
 
         return "book " + book.getTitulo() + " deleted";
