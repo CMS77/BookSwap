@@ -2,14 +2,15 @@ package com.happypotato.BookSwap.model;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Transient;
 
 import java.util.HashSet;
 
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,7 +31,8 @@ public class User {
     private String username;
 
     private String password;
-    @Column(name = "foto_user")
+    @Lob
+    @Column(name = "foto_user", columnDefinition = "LONGBLOB")
     private byte[] profilePhoto;
     @Column(name = "localizacao")
     private String location;
@@ -71,8 +73,18 @@ public class User {
         return password;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public byte[] getProfilePhoto() {
         return profilePhoto;
+    }
+
+    @Transient
+    @JsonProperty("profilePhotoUrl")
+    public String getProfilePhotoUrl() {
+        if (profilePhoto != null) {
+            return "/users/" + username + "/photo";
+        }
+        return null;
     }
 
     public String getLocation() {

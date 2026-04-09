@@ -1,3 +1,5 @@
+const isLoggedIn = !!localStorage.getItem('token');
+
 document.getElementById('navbar').innerHTML = `
 <nav class="sidebar">
     <img src="assets/img/logo.png" class="logo">
@@ -5,7 +7,11 @@ document.getElementById('navbar').innerHTML = `
         <a href="index.html">Home</a>
         <a href="how-it-works.html">How it Works</a>
         <a href="browse.html">Browse Books</a>
-        <a href="login.html">Login</a>
+        ${isLoggedIn
+            ? `<a href="profile.html">Profile</a>
+               <a href="#" class="nav-logout" id="logoutBtn">Logout</a>`
+            : `<a href="login.html">Login</a>`
+        }
     </div>
     <div class="search-bar">
         <input type="text" placeholder="Search...">
@@ -13,6 +19,14 @@ document.getElementById('navbar').innerHTML = `
     </div>
 </nav>`;
 
+if (isLoggedIn) {
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        window.location.href = 'login.html';
+    });
+}
 
 document.getElementById('footer').innerHTML = `
 <footer class="footer">

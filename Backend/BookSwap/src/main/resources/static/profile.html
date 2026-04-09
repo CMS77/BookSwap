@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile — BookSwap</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="navbar"></div>
+
+    <main class="content">
+        <section class="profile-container">
+            <div class="profile-header">
+                <div class="profile-photo">
+                    <img src="assets/img/default-user.png" alt="User Photo">
+                    <input type="file" id="uploadPhoto">
+                </div>
+
+                <div class="profile-info">
+                    <h2 id="name">Nome</h2>
+                    <p class="username">@username</p>
+                    <p class="rating">⭐ 0.0</p>
+
+                    <div class="editable-field">
+                        <label>Bio:</label>
+                        <textarea id="bio"></textarea>
+                    </div>
+
+                    <div class="editable-field">
+                        <label>Location:</label>
+                        <input type="text" id="location">
+                    </div>
+
+                    <button class="btn-primary" onclick="saveProfile()">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+
+            <div class="profile-nav">
+                <button class="tab active" onclick="changeTab('myBooks')">MyBooks</button>
+                <button class="tab" onclick="changeTab('wanted')">Books I Want</button>
+                <button class="tab" onclick="changeTab('borrowed')">Borrowed</button>
+                <button class="tab" onclick="changeTab('lent')">Lent Books</button>
+            </div>
+
+            <div class="profile-content" id="tabContent">
+                <p>Loading...</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/profile.js"></script>
+</body>
+
+</html>

@@ -32,9 +32,8 @@ async function loadUserProfile() {
         document.getElementById("bio").value = user.bio || "";
         document.getElementById("location").value = user.location || "";
 
-        if (user.profilePhoto) {
-            document.querySelector(".profile-photo img").src =
-                "data:image/png;base64," + user.profilePhoto;
+        if (user.profilePhotoUrl) {
+            document.querySelector(".profile-photo img").src = user.profilePhotoUrl;
         }
     } catch (error) {
         console.error("Error loading profile:", error);
