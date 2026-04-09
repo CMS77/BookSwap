@@ -2,6 +2,8 @@ package com.happypotato.BookSwap.controller;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +46,7 @@ public class BookController {
 
         return repository.findById(id)
                 .map(book -> {
-                    book.setImageCapa(newBook.getImageCapa());
+                    book.setImageCapa(newBook.getBookCover());
                     book.setDisponibilidade(newBook.getDisponibilidade());
                     return repository.save(book);
                 })
@@ -60,5 +62,20 @@ public class BookController {
         repository.deleteById(id);
 
         return "book " + book.getTitulo() + " deleted";
+    }
+
+    @GetMapping("/books/{id}/cover")
+    ResponseEntity<byte[]> getCover(@PathVariable Long id) {
+        Book book = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.valueOf(id)));
+
+        byte[] cover = book.getBookCover();
+        if (cover == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(cover);
     }
 }
