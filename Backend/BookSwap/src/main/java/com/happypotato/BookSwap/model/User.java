@@ -2,6 +2,7 @@ package com.happypotato.BookSwap.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Transient;
 
@@ -39,6 +40,7 @@ public class User {
     private String bio;
     private Double rating = 0.0;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Book> books = new HashSet<>();
 

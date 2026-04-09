@@ -2,6 +2,7 @@ package com.happypotato.BookSwap.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -38,6 +39,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/*.html", "/assets/**", "/auth/register", "/auth/login", "/users/*/photo", "/books/*/cover").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/books", "/books/*", "/users/*/books", "/users/*/books/*").permitAll()
+                        .requestMatchers("/requests/**").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -579,3 +579,497 @@ ol li {
     padding: 20px;
     background-color: #fff;
 }
+.genre-filters {                                                                                          
+      display: flex;
+      flex-wrap: wrap;                                                                                      
+      gap: 0.5rem;
+      justify-content: center;                                                                              
+      margin: 1rem 0 1.5rem;
+  }                                                                                                         
+   
+  .genre-pill {                                                                                             
+      background: none;
+      border: 2px solid var(--cor-destaque);
+      color: var(--cor-destaque);                                                                           
+      padding: 6px 16px;
+      border-radius: 20px;                                                                                  
+      cursor: pointer;
+      font-family: "Lora", serif;
+      font-size: 0.875rem;                                                                                  
+      transition: all 0.2s;
+  }                                                                                                         
+                  
+  .genre-pill:hover,                                                                                        
+  .genre-pill.active {
+      background-color: var(--cor-destaque);
+      color: #EAF3DE;
+  }                                                                                                         
+   
+  .book-grid {                                                                                              
+      display: flex;
+      flex-wrap: wrap;                                                                                      
+      gap: 1.5rem;
+      justify-content: center;                                                                              
+      padding: 0 1rem 3rem;
+  }
+
+  .book-card {
+      background: #fff;
+      border: 1.5px solid #C8DFA8;
+      border-radius: 12px;
+      width: 200px;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 12px rgba(45, 80, 22, 0.07);
+      transition: transform 0.2s;
+      position: relative;
+  }
+
+  .book-card:hover {
+      transform: translateY(-4px);
+  }
+
+  .book-cover {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background-color: #EAF3DE;
+      border-radius: 10px 10px 0 0;
+  }
+
+  .card-menu {
+      position: absolute;
+      top: 0.4rem;
+      right: 0.4rem;
+      z-index: 10;
+  }
+
+  .btn-kebab {
+      background: rgba(255, 255, 255, 0.88);
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cor-primaria);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+
+  .btn-kebab:hover { background: #fff; }
+
+  .card-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      background: #fff;
+      border: 1.5px solid #C8DFA8;
+      border-radius: 8px;
+      min-width: 140px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+      z-index: 100;
+      overflow: hidden;
+  }
+
+  .card-dropdown.open { display: block; }
+
+  .card-dropdown button {
+      display: block;
+      width: 100%;
+      padding: 0.55rem 1rem;
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      font-family: "Lora", serif;
+      font-size: 0.85rem;
+      color: #7a2020;
+      font-weight: 600;
+  }
+
+  .card-dropdown button:hover { background: #fdf0f0; }
+
+  .book-card-body {                                                                                         
+      padding: 0.75rem;
+      display: flex;                                                                                        
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1;
+  }
+                                                                                                            
+  .book-title {
+      font-size: 0.9375rem;                                                                                 
+      font-weight: 600;
+      color: var(--cor-primaria);
+      margin: 0;                                                                                            
+  }
+                                                                                                            
+  .book-author {  
+      font-size: 0.8125rem;
+      color: #5F5E5A;
+      margin: 0;                                                                                            
+  }
+                                                                                                            
+  .book-genre {   
+      font-size: 0.75rem;
+      color: var(--cor-destaque);                                                                           
+      font-weight: 600;
+  }                                                                                                         
+                  
+  .book-owner {
+      font-size: 0.75rem;
+      color: #5F5E5A;                                                                                       
+  }
+                                                                                                            
+  .badge-available {
+      display: inline-block;
+      background-color: #C8DFA8;
+      color: var(--cor-primaria);                                                                           
+      font-size: 0.7rem;
+      font-weight: 600;                                                                                     
+      padding: 2px 8px;                                                                                     
+      border-radius: 10px;
+      margin-top: 0.25rem;                                                                                  
+      width: fit-content;
+  }                                                                                                         
+   
+  .badge-unavailable {
+      display: inline-block;
+      background-color: #f4a4a4;
+      color: #7a2020;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-top: 0.25rem;
+      width: fit-content;
+  }
+
+.btn-request {
+    margin-top: 0.5rem;
+    width: 100%;
+    padding: 6px 0;
+    background-color: var(--cor-primaria);
+    color: #EAF3DE;
+    border: none;
+    border-radius: 20px;
+    font-family: "Lora", serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-request:hover {
+    opacity: 0.85;
+}
+
+.btn-return {
+    margin-top: 0.5rem;
+    width: 100%;
+    padding: 6px 0;
+    background-color: transparent;
+    color: #7a2020;
+    border: 1.5px solid #7a2020;
+    border-radius: 20px;
+    font-family: "Lora", serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-return:hover {
+    background-color: #f4a4a4;
+}
+
+.btn-delete {
+    margin-top: 0.5rem;
+    width: 100%;
+    padding: 6px 0;
+    background-color: transparent;
+    color: #7a2020;
+    border: 1.5px solid #7a2020;
+    border-radius: 20px;
+    font-family: "Lora", serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-delete:hover {
+    background-color: #f4a4a4;
+}
+.requests-section {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.requests-title {
+    color: var(--cor-primaria);
+    font-size: 1rem;
+    margin: 0 0 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid #C8DFA8;
+}
+
+.requests-empty {
+    color: #5F5E5A;
+    font-size: 0.875rem;
+}
+
+.request-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cor-fundo);
+    border: 1.5px solid #C8DFA8;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+}
+
+.request-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.request-book {
+    font-weight: 600;
+    color: var(--cor-primaria);
+    font-size: 0.9375rem;
+}
+
+.request-user {
+    font-size: 0.8125rem;
+    color: #5F5E5A;
+}
+
+.request-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.btn-accept {
+    padding: 6px 14px;
+    background-color: var(--cor-primaria);
+    color: #EAF3DE;
+    border: none;
+    border-radius: 20px;
+    font-family: "Lora", serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-accept:hover { opacity: 0.85; }
+
+.btn-reject {
+    padding: 6px 14px;
+    background-color: transparent;
+    color: #7a2020;
+    border: 1.5px solid #7a2020;
+    border-radius: 20px;
+    font-family: "Lora", serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-reject:hover { background-color: #f4a4a4; }
+
+.badge-completed {
+    display: inline-block;
+    background-color: #d4edda;
+    color: #155724;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.rating-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-top: 1px solid #C8DFA8;
+    padding-top: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.star-input {
+    display: flex;
+    gap: 4px;
+}
+
+.star-input .star {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.15s;
+    line-height: 1;
+}
+
+.star-input .star.selected {
+    color: #f5a623;
+}
+
+.rating-textarea {
+    width: 100%;
+    border: 1.5px solid #C8DFA8;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-family: "Lora", serif;
+    font-size: 0.85rem;
+    color: var(--cor-texto);
+    background: #fff;
+    resize: none;
+    box-sizing: border-box;
+}
+
+.badge-pending {
+    display: inline-block;
+    background-color: #FFF3CD;
+    color: #7a5c00;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.request-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.requester-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.requester-photo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #C8DFA8;
+    flex-shrink: 0;
+}
+
+.requester-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.requester-name {
+    font-weight: 600;
+    color: var(--cor-primaria);
+    font-size: 0.9375rem;
+}
+
+.requester-username {
+    color: #5F5E5A;
+    font-size: 0.8125rem;
+}
+
+.requester-meta {
+    color: #5F5E5A;
+    font-size: 0.8125rem;
+}
+
+.request-book-info {
+    font-size: 0.875rem;
+    color: var(--cor-texto);
+    padding-left: 0.25rem;
+}
+
+.request-actions {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-accept, .btn-reject {
+    flex: 1;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(45, 80, 22, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-card h3 {
+    color: var(--cor-primaria);
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.modal-card select {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #C8DFA8;
+    font-size: 0.9375rem;
+    font-family: "Lora", serif;
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
+    outline: none;
+    width: 100%;
+}
+
+.modal-card select:focus {
+    border-color: var(--cor-destaque);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.modal-actions .btn-primary,
+.modal-actions .btn-secondary {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}

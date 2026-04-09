@@ -14,8 +14,8 @@ document.getElementById('navbar').innerHTML = `
         }
     </div>
     <div class="search-bar">
-        <input type="text" placeholder="Search...">
-        <button>🔍</button>
+        <input type="text" id="navSearch" placeholder="Search...">
+        <button id="navSearchBtn">🔍</button>
     </div>
 </nav>`;
 
@@ -27,6 +27,18 @@ if (isLoggedIn) {
         window.location.href = 'login.html';
     });
 }
+
+const navSearchBtn = document.getElementById('navSearchBtn');
+const navSearch = document.getElementById('navSearch');
+
+navSearchBtn.addEventListener('click', () => {
+    const term = navSearch.value.trim();
+    if (term) window.location.href = `browse.html?search=${encodeURIComponent(term)}`;
+});
+
+navSearch.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') navSearchBtn.click();
+});
 
 document.getElementById('footer').innerHTML = `
 <footer class="footer">
@@ -42,7 +54,7 @@ document.querySelectorAll('.card-flip').forEach(card => {
     });
 });
 
-document.querySelector('.logo').addEventListener('click', function() {
+document.querySelector('.logo').addEventListener('click', function () {
     window.location.href = 'index.html';
 });
 

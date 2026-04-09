@@ -2,6 +2,7 @@ package com.happypotato.BookSwap.model;
 
 import jakarta.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Transient;
 
@@ -31,6 +32,11 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "borrowed_by_id")
+    private User borrowedBy;
+
     private String genre;
 
     public Book() {
@@ -71,6 +77,7 @@ public class Book {
         return null;
     }
 
+    @JsonIgnore
     public boolean getDisponibilidade() {
         return disponibilidade;
     }
@@ -97,6 +104,23 @@ public class Book {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getBorrowedBy() {
+        return borrowedBy;
+    }
+
+    public void setBorrowedBy(User borrowedBy) {
+        this.borrowedBy = borrowedBy;
+        this.disponibilidade = (borrowedBy == null);
     }
 
 }

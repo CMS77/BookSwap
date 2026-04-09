@@ -42,10 +42,10 @@
             </div>
 
             <div class="profile-nav">
-                <button class="tab active" onclick="changeTab('myBooks')">MyBooks</button>
-                <button class="tab" onclick="changeTab('wanted')">Books I Want</button>
+                <button class="tab active" onclick="changeTab('myBooks')">My Books</button>
+                <button class="tab" onclick="changeTab('lent')">Lent</button>
                 <button class="tab" onclick="changeTab('borrowed')">Borrowed</button>
-                <button class="tab" onclick="changeTab('lent')">Lent Books</button>
+                <button class="tab" id="tabRequests" onclick="changeTab('requests')">Requests</button>
             </div>
 
             <div class="profile-content" id="tabContent">
@@ -53,6 +53,76 @@
             </div>
         </section>
     </main>
+
+    <div id="addBookModal" class="modal-overlay" style="display:none">
+        <div class="modal-card">
+            <h3>Add a Book</h3>
+            <div class="form-group">
+                <label>Title *</label>
+                <input type="text" id="bookTitulo" placeholder="Book title">
+            </div>
+            <div class="form-group">
+                <label>Author *</label>
+                <input type="text" id="bookAutor" placeholder="Author name">
+            </div>
+            <div class="form-group">
+                <label>Genre *</label>
+                <select id="bookGenre">
+                    <option value="">Select a genre</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Science Fiction">Science Fiction</option>
+                    <option value="Biography">Biography</option>
+                    <option value="Self-Help">Self-Help</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Cover Image (optional)</label>
+                <input type="file" id="bookCover" accept="image/*">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="submitBook()">Add Book</button>
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editBookModal" class="modal-overlay" style="display:none">
+        <div class="modal-card">
+            <h3>Edit Book</h3>
+            <div class="form-group">
+                <label>Title *</label>
+                <input type="text" id="editTitulo" placeholder="Book title">
+            </div>
+            <div class="form-group">
+                <label>Author *</label>
+                <input type="text" id="editAutor" placeholder="Author name">
+            </div>
+            <div class="form-group">
+                <label>Genre *</label>
+                <select id="editGenre">
+                    <option value="">Select a genre</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Science Fiction">Science Fiction</option>
+                    <option value="Biography">Biography</option>
+                    <option value="Self-Help">Self-Help</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Cover Image</label>
+                <input type="file" id="editCover" accept="image/*">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="submitEditBook()">Save Changes</button>
+                <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <div id="footer"></div>
     <script src="assets/js/components.js"></script>

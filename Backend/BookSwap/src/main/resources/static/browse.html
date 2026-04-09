@@ -1,20 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Books — BookSwap</title>
+    <title>Browse Books</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div id="navbar"></div>
 
     <main class="content">
 
+        <div class="genre-filters">
+            <button class="genre-pill active" onclick="filterGenre('all')">All</button>
+            <button class="genre-pill" onclick="filterGenre('Fiction')">Fiction</button>
+            <button class="genre-pill" onclick="filterGenre('Fantasy')">Fantasy</button>
+            <button class="genre-pill" onclick="filterGenre('Mystery')">Mystery</button>
+            <button class="genre-pill" onclick="filterGenre('Romance')">Romance</button>
+            <button class="genre-pill" onclick="filterGenre('Science Fiction')">Sci-Fi</button>
+            <button class="genre-pill" onclick="filterGenre('Biography')">Biography</button>
+            <button class="genre-pill" onclick="filterGenre('Self-Help')">Self-Help</button>
+        </div>
+
+        <div class="book-grid" id="bookGrid"></div>
+
     </main>
 
     <div id="footer"></div>
     <script src="assets/js/components.js"></script>
+    <script src="assets/js/browse.js"></script>
 </body>
+
 </html>

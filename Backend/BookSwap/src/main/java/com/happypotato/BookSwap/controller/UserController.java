@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import com.happypotato.BookSwap.model.Book;
 import com.happypotato.BookSwap.model.User;
 import com.happypotato.BookSwap.exception.NotFoundException;
+import com.happypotato.BookSwap.repository.BookRepository;
 import com.happypotato.BookSwap.repository.UserRepository;
 
 @RestController
@@ -25,9 +27,11 @@ import com.happypotato.BookSwap.repository.UserRepository;
 public class UserController {
 
     private final UserRepository repository;
+    private final BookRepository bookRepository;
 
-    UserController(@Autowired UserRepository repository) {
+    UserController(@Autowired UserRepository repository, @Autowired BookRepository bookRepository) {
         this.repository = repository;
+        this.bookRepository = bookRepository;
     }
 
     @GetMapping
@@ -68,6 +72,21 @@ public class UserController {
 
         return repository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(username));
+    }
+
+    @GetMapping("/{username}/books")
+    List<Book> getUserBooks(@PathVariable String username) {
+        return bookRepository.findByUserUsernameAndBorrowedByIsNull(username);
+    }
+
+    @GetMapping("/{username}/books/lent")
+    List<Book> getLentBooks(@PathVariable String username) {
+        return bookRepository.findByUserUsernameAndBorrowedByIsNotNull(username);
+    }
+
+    @GetMapping("/{username}/books/borrowed")
+    List<Book> getBorrowedBooks(@PathVariable String username) {
+        return bookRepository.findByBorrowedByUsername(username);
     }
 
     @GetMapping("/{username}/photo")
