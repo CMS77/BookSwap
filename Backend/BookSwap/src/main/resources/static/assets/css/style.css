@@ -838,6 +838,11 @@ ol li {
     gap: 1rem;
 }
 
+.request-card-new {
+    border-left: 4px solid #c8a96e;
+    background: #fdf8ef;
+}
+
 .request-info {
     display: flex;
     flex-direction: column;
@@ -1072,4 +1077,18 @@ ol li {
     padding: 10px;
     border: none;
     cursor: pointer;
+}
+
+
+a.book-owner,
+a.request-user,
+a.requester-username {
+    color: #c8a96e;
+    text-decoration: none;
+}
+
+a.book-owner:hover,
+a.request-user:hover,
+a.requester-username:hover {
+    text-decoration: underline;
 }

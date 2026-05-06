@@ -16,12 +16,17 @@
             <p>Join a community of readers who share, discover, and exchange books they love.</p>
             <div class="hero-buttons">
                 <a href="browse.html" class="btn-primary">Browse Books</a>
-                <a href="login.html" class="btn-secondary">Start Swapping →</a>
+                <a href="login.html" class="btn-secondary" id="startSwapBtn">Start Swapping →</a>
             </div>
         </section>
     </main>
 
     <div id="footer"></div>
     <script src="assets/js/components.js"></script>
+    <script>
+        if (localStorage.getItem('token')) {
+            document.getElementById('startSwapBtn').href = 'profile.html';
+        }
+    </script>
 </body>
 </html>

@@ -85,15 +85,93 @@ function changeTab(tabName) {
             loadBooks("http://localhost:8080/users/" + username + "/books", "You haven't added any books yet.", "myBooks");
             break;
         case "lent":
-            loadBooks("http://localhost:8080/users/" + username + "/books/lent", "You haven't lent any books yet.", "lent");
+            loadLentTab();
             break;
         case "borrowed":
-            loadBooks("http://localhost:8080/users/" + username + "/books/borrowed", "You haven't borrowed any books yet.", "borrowed");
+            loadBorrowedTab();
             break;
         case "requests":
             loadRequests();
             break;
+        case "ratings":
+            loadMyRatings();
+            break;
     }
+}
+
+async function loadLentTab() {
+    const content = document.getElementById("tabContent");
+    content.innerHTML = "<p>Loading...</p>";
+
+    const [currentRes, historyRes] = await Promise.all([
+        authFetch(`http://localhost:8080/users/${username}/books/lent`),
+        authFetch("http://localhost:8080/requests/completed/as-owner")
+    ]);
+
+    const current = currentRes.ok ? await currentRes.json() : [];
+    const history = historyRes.ok ? await historyRes.json() : [];
+
+    let html = "";
+
+    if (current.length > 0) {
+        html += `<h3 class="requests-title">Currently lent</h3><div class="book-grid">`;
+        html += current.map(book => buildBookCard(book, "lent")).join("");
+        html += `</div>`;
+    }
+
+    if (history.length > 0) {
+        html += `<h3 class="requests-title" style="margin-top:1.5rem">Past loans</h3>`;
+        html += history.map(r => buildSwapHistoryCard(r, "lent")).join("");
+    }
+
+    if (!html) html = `<p style="color:#5F5E5A; padding:1rem">No lending history yet.</p>`;
+    content.innerHTML = html;
+}
+
+async function loadBorrowedTab() {
+    const content = document.getElementById("tabContent");
+    content.innerHTML = "<p>Loading...</p>";
+
+    const [currentRes, historyRes] = await Promise.all([
+        authFetch(`http://localhost:8080/users/${username}/books/borrowed`),
+        authFetch("http://localhost:8080/requests/completed/as-borrower")
+    ]);
+
+    const current = currentRes.ok ? await currentRes.json() : [];
+    const history = historyRes.ok ? await historyRes.json() : [];
+
+    let html = "";
+
+    if (current.length > 0) {
+        html += `<h3 class="requests-title">Currently borrowing</h3><div class="book-grid">`;
+        html += current.map(book => buildBookCard(book, "borrowed")).join("");
+        html += `</div>`;
+    }
+
+    if (history.length > 0) {
+        html += `<h3 class="requests-title" style="margin-top:1.5rem">Past borrows</h3>`;
+        html += history.map(r => buildSwapHistoryCard(r, "borrowed")).join("");
+    }
+
+    if (!html) html = `<p style="color:#5F5E5A; padding:1rem">No borrowing history yet.</p>`;
+    content.innerHTML = html;
+}
+
+function buildSwapHistoryCard(swap, perspective) {
+    const other = perspective === "lent" ? swap.requester : swap.book.user;
+    const label = perspective === "lent" ? "Borrowed by" : "Owner";
+    const cover = swap.book.bookCoverUrl || "assets/img/default-user.png";
+    const date = new Date(swap.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+    return `
+    <div class="request-card">
+        <img class="book-cover" src="${cover}" alt="${swap.book.titulo}" style="width:48px;height:64px;object-fit:cover;border-radius:4px;flex-shrink:0">
+        <div class="request-info" style="flex:1">
+            <span class="request-book">${swap.book.titulo}</span>
+            <span class="request-user">${label}: <a class="request-user" href="user.html?username=${other.username}">@${other.username}</a></span>
+            <span style="font-size:0.75rem;color:#999">${date}</span>
+        </div>
+        <span class="badge-completed">COMPLETED</span>
+    </div>`;
 }
 
 function buildBookCard(book, tab) {
@@ -249,9 +327,10 @@ async function loadRequests() {
     content.innerHTML = "<p>Loading...</p>";
 
     try {
-        const [receivedRes, sentRes] = await Promise.all([
+        const [receivedRes, sentRes, ratedRes] = await Promise.all([
             authFetch("http://localhost:8080/requests/received"),
-            authFetch("http://localhost:8080/requests/sent")
+            authFetch("http://localhost:8080/requests/sent"),
+            authFetch("http://localhost:8080/ratings/my-rated-swaps")
         ]);
 
         if (!receivedRes.ok) {
@@ -267,11 +346,33 @@ async function loadRequests() {
 
         const received = await receivedRes.json();
         const sent = await sentRes.json();
+        const serverRatedIds = ratedRes.ok ? await ratedRes.json() : [];
+        if (!ratedRes.ok) console.warn("[loadRequests] /ratings/my-rated-swaps failed:", ratedRes.status);
+        const localRatedIds = JSON.parse(localStorage.getItem(`ratedSwaps_${username}`) || '[]');
+        const ratedSwapIds = [...new Set([...serverRatedIds, ...localRatedIds])];
+        console.log("[loadRequests] ratedSwapIds:", ratedSwapIds);
         console.log("[loadRequests] received:", received.length, "sent:", sent.length);
 
+        const storageKey = `seenSentRequests_${username}`;
+        const seen = JSON.parse(localStorage.getItem(storageKey) || '{}');
+
         const pending = received.filter(r => r.status === "PENDING");
-        const accepted = received.filter(r => r.status === "ACCEPTED");
-        const completedReceived = received.filter(r => r.status === "COMPLETED");
+
+        const acceptedRaw = received.filter(r => r.status === "ACCEPTED");
+        const acceptedByBook = {};
+        acceptedRaw.forEach(r => {
+            if (!acceptedByBook[r.book.id] || r.id > acceptedByBook[r.book.id].id)
+                acceptedByBook[r.book.id] = r;
+        });
+        const accepted = Object.values(acceptedByBook);
+
+        const completedRaw = received.filter(r => r.status === "COMPLETED" && !ratedSwapIds.includes(r.id));
+        const completedByBook = {};
+        completedRaw.forEach(r => {
+            if (!completedByBook[r.book.id] || r.id > completedByBook[r.book.id].id)
+                completedByBook[r.book.id] = r;
+        });
+        const completedReceived = Object.values(completedByBook);
 
         let html = `<div class="requests-section">`;
 
@@ -330,7 +431,7 @@ async function loadRequests() {
                         <span class="request-book">${r.book.titulo}</span>
                         <span class="request-user">returned by @${r.requester.username}</span>
                     </div>
-                    ${buildRatingForm(r.id)}
+                    ${buildRatingForm(r.id, ratedSwapIds.includes(r.id))}
                 </div>`;
             });
         }
@@ -339,27 +440,50 @@ async function loadRequests() {
         if (sent.length === 0) {
             html += `<p class="requests-empty">You haven't sent any requests yet.</p>`;
         } else {
-            sent.forEach(r => {
+            const sentDeduped = Object.values(
+                sent.reduce((acc, r) => {
+                    const key = r.status === "COMPLETED" ? `completed-${r.book.id}` : String(r.id);
+                    if (!acc[key] || r.id > acc[key].id) acc[key] = r;
+                    return acc;
+                }, {})
+            );
+            const sortedSent = [...sentDeduped].sort((a, b) => {
+                const aNew = (a.status === "ACCEPTED" || a.status === "REJECTED") && !seen[a.id];
+                const bNew = (b.status === "ACCEPTED" || b.status === "REJECTED") && !seen[b.id];
+                if (aNew !== bNew) return aNew ? -1 : 1;
+                return b.id - a.id;
+            });
+            sortedSent.forEach(r => {
                 const statusClass = r.status === "ACCEPTED" ? "badge-available"
                     : r.status === "REJECTED" ? "badge-unavailable"
                         : r.status === "COMPLETED" ? "badge-completed"
                             : "badge-pending";
+                const isNew = (r.status === "ACCEPTED" || r.status === "REJECTED") && !seen[r.id];
                 html += `
-                <div class="request-card">
+                <div class="request-card${isNew ? ' request-card-new' : ''}">
                     <div class="request-info">
                         <span class="request-book">${r.book.titulo}</span>
                         <a class="request-user" href="user.html?username=${r.book.user.username}">@${r.book.user.username}</a>
                     </div>
-                    <span class="${statusClass}">${r.status}</span>
-                    ${r.status === "COMPLETED" ? buildRatingForm(r.id) : ''}
+                    <div style="display:flex;align-items:center;gap:0.5rem">
+                        ${isNew ? '<span style="font-size:0.75rem;color:#c8a96e;font-weight:600">NEW</span>' : ''}
+                        <span class="${statusClass}">${r.status}</span>
+                    </div>
                 </div>`;
             });
         }
 
+
+        const updatedSeen = { ...seen };
+        sent.forEach(r => {
+            if (r.status === "ACCEPTED" || r.status === "REJECTED") updatedSeen[r.id] = true;
+        });
+        localStorage.setItem(storageKey, JSON.stringify(updatedSeen));
+
         html += `</div>`;
         content.innerHTML = html;
 
-        updateRequestsBadge(pending.length);
+        updateRequestsBadge(pending.length, 0);
 
     } catch (error) {
         console.error("[loadRequests] failed:", error);
@@ -367,7 +491,8 @@ async function loadRequests() {
     }
 }
 
-function buildRatingForm(swapId) {
+function buildRatingForm(swapId, alreadyRated = false) {
+    if (alreadyRated) return '<span class="badge-available">Already rated ⭐</span>';
     const stars = [1, 2, 3, 4, 5]
         .map(n => `<span class="star" onclick="selectStar(${swapId}, ${n})">★</span>`)
         .join('');
@@ -402,11 +527,14 @@ async function submitRating(swapId) {
         body: JSON.stringify({ swapRequestId: swapId, score, comment: comment || null })
     });
 
-    const ratingDiv = document.getElementById(`rate-${swapId}`);
     if (response.ok) {
-        ratingDiv.innerHTML = '<span class="badge-available">Rating submitted ⭐</span>';
+        const localRatedIds = JSON.parse(localStorage.getItem(`ratedSwaps_${username}`) || '[]');
+        if (!localRatedIds.includes(swapId)) localRatedIds.push(swapId);
+        localStorage.setItem(`ratedSwaps_${username}`, JSON.stringify(localRatedIds));
+        loadRequests();
     } else {
         const msg = await response.text();
+        const ratingDiv = document.getElementById(`rate-${swapId}`);
         if (msg.includes("already rated")) {
             ratingDiv.innerHTML = '<span class="badge-available">Already rated ⭐</span>';
         } else {
@@ -486,19 +614,82 @@ async function sendBookRequest(body) {
     }
 }
 
+async function loadMyRatings() {
+    const content = document.getElementById("tabContent");
+    content.innerHTML = "<p>Loading...</p>";
+
+    try {
+        const res = await authFetch(`http://localhost:8080/users/${username}/ratings`);
+        const ratings = await res.json();
+
+        if (ratings.length === 0) {
+            content.innerHTML = `<p style="color:#5F5E5A; padding:1rem">You haven't received any ratings yet.</p>`;
+            return;
+        }
+
+        const average = (ratings.reduce((sum, r) => sum + r.score, 0) / ratings.length).toFixed(1);
+
+        let html = `<div class="requests-section">`;
+        html += `<p style="padding:0.5rem 0 1rem; color:#5F5E5A">Average rating: <strong style="color:#c8a96e">⭐ ${average}</strong> (${ratings.length} review${ratings.length !== 1 ? 's' : ''})</p>`;
+
+        ratings.forEach(r => {
+            const stars = '★'.repeat(r.score) + '☆'.repeat(5 - r.score);
+            const date = new Date(r.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            html += `
+            <div class="request-card" style="flex-direction:column; align-items:flex-start; gap:0.4rem">
+                <div style="display:flex; align-items:center; gap:0.75rem; width:100%">
+                    <a class="requester-username" href="user.html?username=${r.rater.username}">@${r.rater.username}</a>
+                    <span style="color:#c8a96e; font-size:1.1rem">${stars}</span>
+                    <span style="color:#999; font-size:0.8rem; margin-left:auto">${date}</span>
+                </div>
+                ${r.comment ? `<p style="color:#3d3b36; margin:0; font-style:italic">"${r.comment}"</p>` : ''}
+            </div>`;
+        });
+
+        html += `</div>`;
+        content.innerHTML = html;
+    } catch {
+        content.innerHTML = "<p>Error loading ratings.</p>";
+    }
+}
+
 async function checkPendingRequests() {
     try {
-        const response = await authFetch("http://localhost:8080/requests/received");
-        const received = await response.json();
-        const count = received.filter(r => r.status === "PENDING").length;
-        updateRequestsBadge(count);
+        const [receivedRes, sentRes] = await Promise.all([
+            authFetch("http://localhost:8080/requests/received"),
+            authFetch("http://localhost:8080/requests/sent")
+        ]);
+        const received = receivedRes.ok ? await receivedRes.json() : [];
+        const sent = sentRes.ok ? await sentRes.json() : [];
+
+        const pendingCount = received.filter(r => r.status === "PENDING").length;
+        const unseenCount = countUnseenSentChanges(sent);
+        updateRequestsBadge(pendingCount, unseenCount);
     } catch (e) { }
 }
 
-function updateRequestsBadge(count) {
+function countUnseenSentChanges(sent) {
+    const storageKey = `seenSentRequests_${username}`;
+    const raw = localStorage.getItem(storageKey);
+
+    if (raw === null) {
+        const initial = {};
+        sent.forEach(r => { initial[r.id] = true; });
+        localStorage.setItem(storageKey, JSON.stringify(initial));
+        return 0;
+    }
+
+    const seen = JSON.parse(raw);
+    return sent.filter(r =>
+        (r.status === 'ACCEPTED' || r.status === 'REJECTED') && !seen[r.id]
+    ).length;
+}
+
+function updateRequestsBadge(pendingCount, unseenCount = 0) {
     const tab = document.getElementById("tabRequests");
     if (!tab) return;
-    tab.textContent = count > 0 ? `Requests (${count})` : "Requests";
+    const total = pendingCount + unseenCount;
+    tab.textContent = total > 0 ? `Requests (${total})` : "Requests";
 }
 
 async function loadBooks(url, emptyMessage, tab) {

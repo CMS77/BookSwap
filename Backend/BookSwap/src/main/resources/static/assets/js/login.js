@@ -17,7 +17,7 @@ document.querySelector('.btn-login').addEventListener('click', async () => {
         if (response.ok) {
             const data = await response.json();
             localStorage.setItem('token', data.token);
-            localStorage.setItem('username', username);
+            localStorage.setItem('username', data.username);
             window.location.href = 'profile.html';
         } else {
             alert('Invalid username or password!');

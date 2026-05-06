@@ -26,8 +26,11 @@ function renderCards() {
 
     const loggedUser = localStorage.getItem('username');
 
+    const loggedUserLower = loggedUser?.toLowerCase();
+
     const filtered = allBooks.filter(book => {
-        if (loggedUser && book.user?.username === loggedUser) return false;
+        if (loggedUserLower && book.user?.username?.toLowerCase() === loggedUserLower) return false;
+        if (book.borrowedBy) return false;
         const matchGenre = activeGenre === 'all' || book.genre === activeGenre;
         const matchSearch = !search
             || book.titulo.toLowerCase().includes(search)
@@ -44,7 +47,8 @@ function renderCards() {
 
     grid.innerHTML = filtered.map(book => {
         const available = !book.borrowedBy;
-        const canRequest = loggedUser && available;
+        const isOwn = loggedUserLower && book.user?.username?.toLowerCase() === loggedUserLower;
+        const canRequest = loggedUser && available && !isOwn;
 
         return `
         <div class="book-card">

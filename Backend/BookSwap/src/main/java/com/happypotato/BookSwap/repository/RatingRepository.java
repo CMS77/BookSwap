@@ -12,4 +12,7 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
 
     @Query("SELECT AVG(r.score) FROM Rating r WHERE r.rated.id = :userId")
     Double findAverageScoreByRatedId(@Param("userId") long userId);
+
+    @Query("SELECT r.swapRequest.id FROM Rating r WHERE r.rater.id = :raterId")
+    java.util.List<Long> findSwapRequestIdsByRaterId(@Param("raterId") long raterId);
 }
