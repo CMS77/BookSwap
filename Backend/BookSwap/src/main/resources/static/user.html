@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile — BookSwap</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="navbar"></div>
+
+    <main class="content">
+        <section class="profile-container">
+            <div class="profile-header">
+                <div class="profile-photo">
+                    <img id="userPhoto" src="assets/img/default-user.png" alt="User Photo">
+                </div>
+
+                <div class="profile-info">
+                    <h2 id="name">—</h2>
+                    <p class="username" id="username">@—</p>
+                    <p class="rating" id="rating">⭐ —</p>
+                    <p id="bio" style="color:#5F5E5A; margin-top:0.5rem"></p>
+                    <p id="location" style="color:#5F5E5A"></p>
+                </div>
+            </div>
+
+            <div class="profile-nav">
+                <button class="tab active" onclick="changeSection('books')">Books</button>
+                <button class="tab" onclick="changeSection('ratings')">Ratings</button>
+            </div>
+
+            <div class="profile-content" id="sectionContent">
+                <p>Loading...</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/user.js"></script>
+</body>
+</html>

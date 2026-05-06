@@ -98,7 +98,7 @@ public class User {
     }
 
     public Double getRating() {
-        return rating;
+        return rating != null ? rating : 0.0;
     }
 
     public void setId(long id) {

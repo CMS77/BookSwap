@@ -3,6 +3,7 @@ package com.happypotato.BookSwap.model;
 import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Transient;
 
@@ -15,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 
+@JsonIgnoreProperties({"disponibilidade"})
 @Entity
 @Table(name = "book")
 public class Book {
@@ -63,9 +65,14 @@ public class Book {
         return autor;
     }
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     public byte[] getBookCover() {
         return bookCover;
+    }
+
+    @JsonProperty("bookCover")
+    public void setBookCover(byte[] bookCover) {
+        this.bookCover = bookCover;
     }
 
     @Transient
@@ -94,10 +101,7 @@ public class Book {
         this.autor = autor;
     }
 
-    public void setImageCapa(byte[] bookCover) {
-        this.bookCover = bookCover;
-    }
-
+    @JsonIgnore
     public void setDisponibilidade(boolean disponibilidade) {
         this.disponibilidade = disponibilidade;
     }

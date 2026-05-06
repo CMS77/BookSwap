@@ -1,5 +1,7 @@
 package com.happypotato.BookSwap.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -19,6 +21,7 @@ public class Rating {
     @JoinColumn(name = "rated_id")
     private User rated;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "swap_request_id")
     private SwapRequest swapRequest;

@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 public interface RatingRepository extends JpaRepository<Rating, Long> {
     boolean existsBySwapRequestIdAndRaterId(long swapRequestId, long raterId);
 
+    java.util.List<Rating> findByRatedUsernameOrderByCreatedAtDesc(String username);
+
     @Query("SELECT AVG(r.score) FROM Rating r WHERE r.rated.id = :userId")
     Double findAverageScoreByRatedId(@Param("userId") long userId);
 }

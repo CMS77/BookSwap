@@ -55,7 +55,7 @@ function renderCards() {
                 <p class="book-title">${book.titulo}</p>
                 <p class="book-author">${book.autor}</p>
                 <span class="book-genre">${book.genre || ''}</span>
-                <span class="book-owner">@${book.user?.username || 'unknown'}</span>
+                <a class="book-owner" href="user.html?username=${book.user?.username}">@${book.user?.username || 'unknown'}</a>
                 <span class="${available ? 'badge-available' : 'badge-unavailable'}">
                     ${available ? 'Available' : 'Unavailable'}
                 </span>

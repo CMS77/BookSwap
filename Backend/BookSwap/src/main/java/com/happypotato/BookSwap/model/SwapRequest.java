@@ -24,6 +24,7 @@ public class SwapRequest {
     private User requester;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(20)")
     private Status status = Status.PENDING;
 
     private LocalDateTime createdAt = LocalDateTime.now();

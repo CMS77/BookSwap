@@ -29,23 +29,25 @@ public class SecurityConfig {
         this.jwtFilter = jwtFilter;
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+ @Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .csrf(csrf -> csrf.disable())
+        .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/error", "/*.html", "/assets/**", "/auth/**").permitAll()
+                .requestMatchers("/users/*/photo", "/books/*/cover").permitAll()
 
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/*.html", "/assets/**", "/auth/register", "/auth/login", "/users/*/photo", "/books/*/cover").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/books", "/books/*", "/users/*/books", "/users/*/books/*").permitAll()
-                        .requestMatchers("/requests/**").authenticated()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .requestMatchers(HttpMethod.GET, "/books/**", "/users/**").permitAll()
+                
+                .anyRequest().authenticated())
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+    return http.build();
+}
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

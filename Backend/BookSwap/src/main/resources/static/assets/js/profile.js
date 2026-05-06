@@ -28,7 +28,7 @@ async function loadUserProfile() {
 
         document.getElementById("name").innerText = user.name;
         document.querySelector(".username").innerText = "@" + user.username;
-        document.querySelector(".rating").innerText = "⭐ " + user.rating;
+        document.querySelector(".rating").innerText = "⭐ " + (user.rating || "—");
 
         document.getElementById("bio").value = user.bio || "";
         document.getElementById("location").value = user.location || "";
@@ -165,44 +165,59 @@ function closeEditModal() {
 }
 
 async function submitEditBook() {
-    const titulo = document.getElementById('editTitulo').value.trim();
-    const autor = document.getElementById('editAutor').value.trim();
+    const title = document.getElementById('editTitulo').value.trim();
+    const author = document.getElementById('editAutor').value.trim();
     const genre = document.getElementById('editGenre').value;
 
-    if (!titulo || !autor || !genre) {
+    if (!title || !author || !genre) {
         alert("Please fill in all required fields.");
         return;
     }
 
-    const body = { titulo, autor, genre };
+    const body = { titulo: title, autor: author, genre: genre };
+    const coverFileInput = document.getElementById('editCover');
+    const coverFile = coverFileInput.files[0];
 
-    const coverFile = document.getElementById('editCover').files[0];
     if (coverFile) {
         const reader = new FileReader();
         reader.readAsDataURL(coverFile);
         reader.onload = async () => {
+            // Extracts only the Base64 string after the comma
             body.bookCover = reader.result.split(',')[1];
             await sendEditRequest(body);
         };
+        reader.onerror = () => {
+            alert("Error reading the image file.");
+        };
     } else {
+        // Sends update without changing the cover
         await sendEditRequest(body);
     }
 }
 
 async function sendEditRequest(body) {
-    const response = await authFetch(`http://localhost:8080/books/${editingBookId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    });
+    try {
+        const response = await authFetch(`http://localhost:8080/books/${editingBookId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
 
-    if (response.ok) {
-        closeEditModal();
-        changeTab('myBooks');
-    } else {
-        alert("Error saving changes. Try again.");
+        if (response.ok) {
+            alert("Book updated successfully!");
+            closeEditModal();
+            changeTab('myBooks');
+        } else {
+            const errorMsg = await response.text();
+            console.error("Server error:", errorMsg);
+            alert("Failed to save changes: " + (errorMsg || response.status));
+        }
+    } catch (error) {
+        console.error("Network error:", error);
+        alert("Could not connect to the server.");
     }
 }
+
 
 async function deleteBook(bookId) {
     if (!confirm("Remove this book? This cannot be undone.")) return;
@@ -219,8 +234,14 @@ async function deleteBook(bookId) {
 
 async function returnBook(bookId) {
     if (!confirm("Mark this book as returned?")) return;
-    await authFetch(`http://localhost:8080/books/${bookId}/return`, { method: "PUT" });
-    changeTab("lent");
+    const res = await authFetch(`http://localhost:8080/books/${bookId}/return`, { method: "PUT" });
+    console.log("[returnBook] status:", res.status);
+    if (!res.ok) {
+        const msg = await res.text();
+        alert("Error returning book: " + msg);
+        return;
+    }
+    changeTab("requests");
 }
 
 async function loadRequests() {
@@ -233,10 +254,23 @@ async function loadRequests() {
             authFetch("http://localhost:8080/requests/sent")
         ]);
 
+        if (!receivedRes.ok) {
+            const err = await receivedRes.text();
+            console.error("[loadRequests] /requests/received error:", receivedRes.status, err);
+            throw new Error("received: " + receivedRes.status);
+        }
+        if (!sentRes.ok) {
+            const err = await sentRes.text();
+            console.error("[loadRequests] /requests/sent error:", sentRes.status, err);
+            throw new Error("sent: " + sentRes.status);
+        }
+
         const received = await receivedRes.json();
         const sent = await sentRes.json();
+        console.log("[loadRequests] received:", received.length, "sent:", sent.length);
 
         const pending = received.filter(r => r.status === "PENDING");
+        const accepted = received.filter(r => r.status === "ACCEPTED");
         const completedReceived = received.filter(r => r.status === "COMPLETED");
 
         let html = `<div class="requests-section">`;
@@ -258,7 +292,7 @@ async function loadRequests() {
                         <img class="requester-photo" src="${photo}" alt="${r.requester.username}">
                         <div class="requester-info">
                             <span class="requester-name">${r.requester.name}</span>
-                            <span class="requester-username">@${r.requester.username}</span>
+                            <a class="requester-username" href="user.html?username=${r.requester.username}">@${r.requester.username}</a>
                             <span class="requester-meta">${rating} ${location}</span>
                         </div>
                     </div>
@@ -269,6 +303,20 @@ async function loadRequests() {
                         <button class="btn-accept" onclick="respondRequest(${r.id}, 'accept')">Accept</button>
                         <button class="btn-reject" onclick="respondRequest(${r.id}, 'reject')">Reject</button>
                     </div>
+                </div>`;
+            });
+        }
+
+        if (accepted.length > 0) {
+            html += `<h3 class="requests-title" style="margin-top:1.5rem">Currently lent</h3>`;
+            accepted.forEach(r => {
+                html += `
+                <div class="request-card">
+                    <div class="request-info">
+                        <span class="request-book">${r.book.titulo}</span>
+                        <span class="request-user">borrowed by @${r.requester.username}</span>
+                    </div>
+                    <span class="badge-available">Lent out</span>
                 </div>`;
             });
         }
@@ -293,14 +341,14 @@ async function loadRequests() {
         } else {
             sent.forEach(r => {
                 const statusClass = r.status === "ACCEPTED" ? "badge-available"
-                                  : r.status === "REJECTED" ? "badge-unavailable"
-                                  : r.status === "COMPLETED" ? "badge-completed"
-                                  : "badge-pending";
+                    : r.status === "REJECTED" ? "badge-unavailable"
+                        : r.status === "COMPLETED" ? "badge-completed"
+                            : "badge-pending";
                 html += `
                 <div class="request-card">
                     <div class="request-info">
                         <span class="request-book">${r.book.titulo}</span>
-                        <span class="request-user">from @${r.book.user.username}</span>
+                        <a class="request-user" href="user.html?username=${r.book.user.username}">@${r.book.user.username}</a>
                     </div>
                     <span class="${statusClass}">${r.status}</span>
                     ${r.status === "COMPLETED" ? buildRatingForm(r.id) : ''}
@@ -314,6 +362,7 @@ async function loadRequests() {
         updateRequestsBadge(pending.length);
 
     } catch (error) {
+        console.error("[loadRequests] failed:", error);
         content.innerHTML = "<p>Error loading requests.</p>";
     }
 }
@@ -403,7 +452,7 @@ async function submitBook() {
         return;
     }
 
-    const body = { titulo, autor, genre, disponibilidade: true };
+    const body = { titulo, autor, genre };
 
     const coverFile = document.getElementById("bookCover").files[0];
     if (coverFile) {
@@ -411,8 +460,10 @@ async function submitBook() {
         reader.readAsDataURL(coverFile);
         reader.onload = async () => {
             body.bookCover = reader.result.split(',')[1];
+            console.log("[submitBook] sending with cover, bookCover length:", body.bookCover?.length);
             await sendBookRequest(body);
         };
+        reader.onerror = () => alert("Error reading the image file.");
     } else {
         await sendBookRequest(body);
     }
@@ -421,6 +472,7 @@ async function submitBook() {
 async function sendBookRequest(body) {
     const response = await authFetch("http://localhost:8080/books", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     });
 
@@ -428,7 +480,9 @@ async function sendBookRequest(body) {
         closeModal();
         changeTab("myBooks");
     } else {
-        alert("Error adding book. Try again.");
+        const errorMsg = await response.text();
+        console.error("Server error:", response.status, errorMsg);
+        alert("Error adding book: " + (errorMsg || response.status));
     }
 }
 
@@ -438,7 +492,7 @@ async function checkPendingRequests() {
         const received = await response.json();
         const count = received.filter(r => r.status === "PENDING").length;
         updateRequestsBadge(count);
-    } catch (e) {}
+    } catch (e) { }
 }
 
 function updateRequestsBadge(count) {

@@ -55,6 +55,7 @@ public class BookController {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(username));
         newBook.setUser(user);
+        newBook.setDisponibilidade(true);
         return repository.save(newBook);
     }
 
@@ -68,19 +69,21 @@ public class BookController {
     @PutMapping("/books/{id}")
     ResponseEntity<?> replaceBook(@RequestBody Book newBook, @PathVariable Long id,
                                   @RequestHeader("Authorization") String authHeader) {
+        System.out.println("[BookController] PUT /books/" + id + " reached");
         String username = jwtUtil.extractUsername(authHeader.replace("Bearer ", ""));
-        return repository.findById(id)
-                .map(book -> {
-                    if (!book.getUser().getUsername().equals(username)) {
-                        return ResponseEntity.status(403).body("You can only edit your own books.");
-                    }
-                    if (newBook.getTitulo() != null) book.setTitulo(newBook.getTitulo());
-                    if (newBook.getAutor() != null) book.setAutor(newBook.getAutor());
-                    if (newBook.getGenre() != null) book.setGenre(newBook.getGenre());
-                    if (newBook.getBookCover() != null) book.setImageCapa(newBook.getBookCover());
-                    return ResponseEntity.ok(repository.save(book));
-                })
+        Book book = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.valueOf(id)));
+
+        if (!book.getUser().getUsername().equals(username)) {
+            return ResponseEntity.status(403).body("You can only edit your own books.");
+        }
+
+        if (newBook.getTitulo() != null) book.setTitulo(newBook.getTitulo());
+        if (newBook.getAutor() != null) book.setAutor(newBook.getAutor());
+        if (newBook.getGenre() != null) book.setGenre(newBook.getGenre());
+        if (newBook.getBookCover() != null) book.setBookCover(newBook.getBookCover());
+
+        return ResponseEntity.ok(repository.save(book));
     }
 
     @PutMapping("/books/{id}/borrow/{borrowerUsername}")
@@ -100,13 +103,13 @@ public class BookController {
         book.setBorrowedBy(null);
         repository.save(book);
 
-        swapRequestRepository.findByBookIdAndStatus(id, SwapRequest.Status.ACCEPTED)
-                .ifPresent(req -> {
+        swapRequestRepository.findAllByBookIdAndStatus(id, SwapRequest.Status.ACCEPTED)
+                .forEach(req -> {
                     req.setStatus(SwapRequest.Status.COMPLETED);
                     swapRequestRepository.save(req);
                 });
 
-        return ResponseEntity.ok(repository.save(book));
+        return ResponseEntity.ok("Book returned.");
     }
 
     @DeleteMapping("/books/{id}")

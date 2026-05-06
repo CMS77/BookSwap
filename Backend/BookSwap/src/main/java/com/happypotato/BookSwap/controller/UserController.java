@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.happypotato.BookSwap.model.Book;
+import com.happypotato.BookSwap.model.Rating;
 import com.happypotato.BookSwap.model.User;
 import com.happypotato.BookSwap.exception.NotFoundException;
 import com.happypotato.BookSwap.repository.BookRepository;
+import com.happypotato.BookSwap.repository.RatingRepository;
 import com.happypotato.BookSwap.repository.UserRepository;
 
 @RestController
@@ -28,6 +30,7 @@ public class UserController {
 
     private final UserRepository repository;
     private final BookRepository bookRepository;
+    @Autowired private RatingRepository ratingRepository;
 
     UserController(@Autowired UserRepository repository, @Autowired BookRepository bookRepository) {
         this.repository = repository;
@@ -87,6 +90,11 @@ public class UserController {
     @GetMapping("/{username}/books/borrowed")
     List<Book> getBorrowedBooks(@PathVariable String username) {
         return bookRepository.findByBorrowedByUsername(username);
+    }
+
+    @GetMapping("/{username}/ratings")
+    List<Rating> getUserRatings(@PathVariable String username) {
+        return ratingRepository.findByRatedUsernameOrderByCreatedAtDesc(username);
     }
 
     @GetMapping("/{username}/photo")
