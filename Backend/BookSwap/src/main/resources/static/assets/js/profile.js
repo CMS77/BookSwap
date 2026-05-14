@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadUserProfile() {
     try {
-        const response = await authFetch("http://localhost:8080/users/" + username, {
+        const response = await authFetch("/users/" + username, {
             method: "GET",
         });
 
@@ -51,7 +51,7 @@ async function saveProfile() {
     }
 
     try {
-        const response = await authFetch("http://localhost:8080/users/" + username, {
+        const response = await authFetch("/users/" + username, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -82,7 +82,7 @@ function changeTab(tabName) {
 
     switch (tabName) {
         case "myBooks":
-            loadBooks("http://localhost:8080/users/" + username + "/books", "You haven't added any books yet.", "myBooks");
+            loadBooks("/users/" + username + "/books", "You haven't added any books yet.", "myBooks");
             break;
         case "lent":
             loadLentTab();
@@ -104,8 +104,8 @@ async function loadLentTab() {
     content.innerHTML = "<p>Loading...</p>";
 
     const [currentRes, historyRes] = await Promise.all([
-        authFetch(`http://localhost:8080/users/${username}/books/lent`),
-        authFetch("http://localhost:8080/requests/completed/as-owner")
+        authFetch(`/users/${username}/books/lent`),
+        authFetch("/requests/completed/as-owner")
     ]);
 
     const current = currentRes.ok ? await currentRes.json() : [];
@@ -133,8 +133,8 @@ async function loadBorrowedTab() {
     content.innerHTML = "<p>Loading...</p>";
 
     const [currentRes, historyRes] = await Promise.all([
-        authFetch(`http://localhost:8080/users/${username}/books/borrowed`),
-        authFetch("http://localhost:8080/requests/completed/as-borrower")
+        authFetch(`/users/${username}/books/borrowed`),
+        authFetch("/requests/completed/as-borrower")
     ]);
 
     const current = currentRes.ok ? await currentRes.json() : [];
@@ -275,7 +275,7 @@ async function submitEditBook() {
 
 async function sendEditRequest(body) {
     try {
-        const response = await authFetch(`http://localhost:8080/books/${editingBookId}`, {
+        const response = await authFetch(`/books/${editingBookId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
@@ -300,7 +300,7 @@ async function sendEditRequest(body) {
 async function deleteBook(bookId) {
     if (!confirm("Remove this book? This cannot be undone.")) return;
 
-    const response = await authFetch(`http://localhost:8080/books/${bookId}`, { method: "DELETE" });
+    const response = await authFetch(`/books/${bookId}`, { method: "DELETE" });
 
     if (response.ok) {
         changeTab("myBooks");
@@ -312,7 +312,7 @@ async function deleteBook(bookId) {
 
 async function returnBook(bookId) {
     if (!confirm("Mark this book as returned?")) return;
-    const res = await authFetch(`http://localhost:8080/books/${bookId}/return`, { method: "PUT" });
+    const res = await authFetch(`/books/${bookId}/return`, { method: "PUT" });
     console.log("[returnBook] status:", res.status);
     if (!res.ok) {
         const msg = await res.text();
@@ -328,9 +328,9 @@ async function loadRequests() {
 
     try {
         const [receivedRes, sentRes, ratedRes] = await Promise.all([
-            authFetch("http://localhost:8080/requests/received"),
-            authFetch("http://localhost:8080/requests/sent"),
-            authFetch("http://localhost:8080/ratings/my-rated-swaps")
+            authFetch("/requests/received"),
+            authFetch("/requests/sent"),
+            authFetch("/ratings/my-rated-swaps")
         ]);
 
         if (!receivedRes.ok) {
@@ -382,7 +382,7 @@ async function loadRequests() {
         } else {
             pending.forEach(r => {
                 const photo = r.requester.profilePhotoUrl
-                    ? `http://localhost:8080${r.requester.profilePhotoUrl}`
+                    ? `${r.requester.profilePhotoUrl}`
                     : 'assets/img/default-user.png';
                 const rating = r.requester.rating ? `⭐ ${r.requester.rating}` : '⭐ —';
                 const location = r.requester.location ? `📍 ${r.requester.location}` : '';
@@ -521,7 +521,7 @@ async function submitRating(swapId) {
     }
     const comment = document.getElementById(`comment-${swapId}`).value.trim();
 
-    const response = await authFetch('http://localhost:8080/ratings', {
+    const response = await authFetch('/ratings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ swapRequestId: swapId, score, comment: comment || null })
@@ -547,7 +547,7 @@ async function respondRequest(requestId, action) {
     const label = action === 'accept' ? 'accept' : 'reject';
     if (!confirm(`Are you sure you want to ${label} this request?`)) return;
 
-    const response = await authFetch(`http://localhost:8080/requests/${requestId}/${action}`, {
+    const response = await authFetch(`/requests/${requestId}/${action}`, {
         method: "PUT"
     });
 
@@ -598,7 +598,7 @@ async function submitBook() {
 }
 
 async function sendBookRequest(body) {
-    const response = await authFetch("http://localhost:8080/books", {
+    const response = await authFetch("/books", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
@@ -619,7 +619,7 @@ async function loadMyRatings() {
     content.innerHTML = "<p>Loading...</p>";
 
     try {
-        const res = await authFetch(`http://localhost:8080/users/${username}/ratings`);
+        const res = await authFetch(`/users/${username}/ratings`);
         const ratings = await res.json();
 
         if (ratings.length === 0) {
@@ -656,8 +656,8 @@ async function loadMyRatings() {
 async function checkPendingRequests() {
     try {
         const [receivedRes, sentRes] = await Promise.all([
-            authFetch("http://localhost:8080/requests/received"),
-            authFetch("http://localhost:8080/requests/sent")
+            authFetch("/requests/received"),
+            authFetch("/requests/sent")
         ]);
         const received = receivedRes.ok ? await receivedRes.json() : [];
         const sent = sentRes.ok ? await sentRes.json() : [];

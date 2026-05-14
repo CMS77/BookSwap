@@ -2,7 +2,7 @@ let allBooks = [];
 let activeGenre = 'all';
 
 async function loadBooks() {
-    const response = await fetch('http://localhost:8080/books');
+    const response = await fetch('/books');
     allBooks = await response.json();
 
     const params = new URLSearchParams(window.location.search);
@@ -77,7 +77,7 @@ async function requestBook(bookId, ownerUsername) {
     }
     if (!confirm(`Send a request to borrow this book from @${ownerUsername}?`)) return;
 
-    const response = await authFetch('http://localhost:8080/requests', {
+    const response = await authFetch('/requests', {
         method: 'POST',
         body: JSON.stringify({ bookId })
     });

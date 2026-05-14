@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadUserProfile() {
     try {
-        const res = await fetch(`http://localhost:8080/users/${username}`);
+        const res = await fetch(`/users/${username}`);
         if (!res.ok) throw new Error();
         userData = await res.json();
 
@@ -26,7 +26,7 @@ async function loadUserProfile() {
         document.getElementById('location').innerText = userData.location ? '📍 ' + userData.location : '';
 
         if (userData.profilePhotoUrl) {
-            document.getElementById('userPhoto').src = 'http://localhost:8080' + userData.profilePhotoUrl;
+            document.getElementById('userPhoto').src = '' + userData.profilePhotoUrl;
         }
     } catch {
         document.getElementById('sectionContent').innerHTML = '<p>Could not load profile.</p>';
@@ -46,7 +46,7 @@ async function loadBooks() {
     content.innerHTML = '<p>Loading...</p>';
 
     try {
-        const res = await fetch(`http://localhost:8080/users/${username}/books`);
+        const res = await fetch(`/users/${username}/books`);
         const books = await res.json();
 
         if (books.length === 0) {
@@ -78,7 +78,7 @@ async function loadRatings() {
     content.innerHTML = '<p>Loading...</p>';
 
     try {
-        const res = await fetch(`http://localhost:8080/users/${username}/ratings`);
+        const res = await fetch(`/users/${username}/ratings`);
         const ratings = await res.json();
 
         if (ratings.length === 0) {
