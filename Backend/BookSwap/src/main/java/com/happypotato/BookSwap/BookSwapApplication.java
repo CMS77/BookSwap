@@ -2,8 +2,10 @@ package com.happypotato.BookSwap;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class BookSwapApplication {
 
 	public static void main(String[] args) {
@@ -11,3 +13,5 @@ public class BookSwapApplication {
 	}
 
 }
+
+//docker compose -f  /Users/happypotatos/Documents/GitHub/BookSwap/Backend/BookSwap/compose.yaml up   -d

@@ -39,6 +39,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/error", "/*.html", "/assets/**", "/auth/**").permitAll()
                 .requestMatchers("/users/*/photo", "/books/*/cover").permitAll()
+                .requestMatchers("/api/messages/stream/**").permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/books/**", "/users/**").permitAll()
                 

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HappyPotato BookSwap</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -12,21 +12,136 @@
 
     <main class="content">
         <section class="hero">
-            <h1>Let your books<br>continue their journey. 📚</h1>
-            <p>Join a community of readers who share, discover, and exchange books they love.</p>
+            <span class="hero-badge">Free to use · No subscriptions · Just books</span>
+            <h1>Books are better<br>when they travel.</h1>
+            <p>Borrow from readers nearby. Share what's been sitting on your shelf. No fees, no shipping — just books moving between people.</p>
             <div class="hero-buttons">
                 <a href="browse.html" class="btn-primary">Browse Books</a>
                 <a href="login.html" class="btn-secondary" id="startSwapBtn">Start Swapping →</a>
             </div>
         </section>
+
+        <h2>How It Works</h2>
+        <p class="hiw-intro">Pick up a book someone nearby already loved. Leave one behind for the next reader. That's really all there is to it.</p>
+
+        <section class="cards">
+            <div class="card-flip">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </div>
+                        <h3>List Your Books</h3>
+                        <p>Add books you've already read. Someone nearby wants it — you confirm, arrange a handoff, done.</p>
+                        <small>See how it works →</small>
+                    </div>
+                    <div class="card-back">
+                        <div class="steps-mini">
+                            <div class="step-mini highlight">Your shelf is already full.</div>
+                            <div class="step-mini">Add titles to your profile and mark them as available. When a reader nearby sends a request, you confirm and sort out where to meet. Your book goes to someone who'll actually read it — and comes back when they're done.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-flip">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </div>
+                        <h3>Discover New Reads</h3>
+                        <p>Search by title or author, or just browse what's near you. Found something? Send a request.</p>
+                        <small>See how it works →</small>
+                    </div>
+                    <div class="card-back">
+                        <div class="steps-mini">
+                            <div class="step-mini highlight">It's already out there waiting.</div>
+                            <div class="step-mini">Search the catalogue or scroll through what's available nearby. When something catches your eye, send a request to the owner. If they confirm, you agree on a time and place. That's it.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-flip">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3>Meet & Exchange</h3>
+                        <p>Pick a public spot, swap in person, confirm on the platform. Rate after.</p>
+                        <small>See how it works →</small>
+                    </div>
+                    <div class="card-back">
+                        <div class="steps-mini">
+                            <div class="step-mini highlight">A coffee shop works fine.</div>
+                            <div class="step-mini">Agree on somewhere public — a library, a café, wherever makes sense. Hand the book over, confirm the exchange on the app, and leave a rating. Ratings keep the community honest and make the next swap easier for everyone.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps-section">
+            <h3>The process, step by step</h3>
+
+            <div class="step-row">
+                <div class="step-number">1</div>
+                <div class="step-text">
+                    <strong>Create your account</strong>
+                    <span>Takes less than a minute. No credit card, no commitments.</span>
+                </div>
+            </div>
+            <div class="step-connector"></div>
+
+            <div class="step-row">
+                <div class="step-number">2</div>
+                <div class="step-text">
+                    <strong>Add books to your profile</strong>
+                    <span>Pick from your shelf, add the title and author. That's all it takes.</span>
+                </div>
+            </div>
+            <div class="step-connector"></div>
+
+            <div class="step-row">
+                <div class="step-number">3</div>
+                <div class="step-text">
+                    <strong>Browse and request</strong>
+                    <span>Find something you want to read. Send a request to the owner.</span>
+                </div>
+            </div>
+            <div class="step-connector"></div>
+
+            <div class="step-row">
+                <div class="step-number">4</div>
+                <div class="step-text">
+                    <strong>Confirm and arrange</strong>
+                    <span>The owner accepts, you agree on where and when to meet.</span>
+                </div>
+            </div>
+            <div class="step-connector"></div>
+
+            <div class="step-row">
+                <div class="step-number">5</div>
+                <div class="step-text">
+                    <strong>Meet and exchange</strong>
+                    <span>Pick a café, a library, wherever works. Hand it over.</span>
+                </div>
+            </div>
+            <div class="step-connector"></div>
+
+            <div class="step-row">
+                <div class="step-number">6</div>
+                <div class="step-text">
+                    <strong>Rate your experience</strong>
+                    <span>A quick rating keeps the community honest.</span>
+                </div>
+            </div>
+        </section>
     </main>
 
     <div id="footer"></div>
-    <script src="assets/js/components.js"></script>
-    <script>
-        if (localStorage.getItem('token')) {
-            document.getElementById('startSwapBtn').href = 'profile.html';
-        }
-    </script>
+    <script src="assets/js/components.js?v=3"></script>
 </body>
 </html>

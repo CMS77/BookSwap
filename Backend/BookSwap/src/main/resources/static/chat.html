@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat — BookSwap</title>
+    <link rel="stylesheet" href="assets/css/style.css?v=3">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="navbar"></div>
+
+    <main class="content">
+        <div class="chat-wrapper">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <span class="chat-book-title" id="chatBookTitle">Loading...</span>
+                    <span class="chat-with" id="chatWith"></span>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-loading">Loading messages...</div>
+            </div>
+
+            <form class="chat-input-area" id="chatForm">
+                <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off">
+                <button type="submit" class="btn-send">Send</button>
+            </form>
+        </div>
+    </main>
+
+    <div id="footer"></div>
+    <script src="assets/js/components.js?v=3"></script>
+    <script src="assets/js/chat.js?v=3"></script>
+</body>
+</html>
