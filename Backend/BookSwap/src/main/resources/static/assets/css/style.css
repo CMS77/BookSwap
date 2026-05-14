@@ -1410,6 +1410,11 @@ ol li {
     color: #155724;
 }
 
+.msg-status-completed {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
 .messages-item.no-messages .messages-preview {
     color: #aaa;
     font-style: italic;

@@ -38,7 +38,7 @@ function renderChats(chats) {
         const item = document.createElement('a');
         item.href = link;
         item.className = `messages-item${isUnread ? ' unread' : ''}${!hasMessages ? ' no-messages' : ''}`;
-        const statusClass = chat.status === 'ACCEPTED' ? 'msg-status-accepted' : 'msg-status-pending';
+        const statusClass = chat.status === 'ACCEPTED' ? 'msg-status-accepted' : chat.status === 'COMPLETED' ? 'msg-status-completed' : 'msg-status-pending';
         item.innerHTML = `
             <div class="messages-item-icon">📖</div>
             <div class="messages-item-body">

@@ -80,8 +80,10 @@ public class MessageController {
         List<SwapRequest> requests = new ArrayList<>();
         requests.addAll(swapRequestRepository.findByBookUserUsernameAndStatus(username, SwapRequest.Status.PENDING));
         requests.addAll(swapRequestRepository.findByBookUserUsernameAndStatus(username, SwapRequest.Status.ACCEPTED));
+        requests.addAll(swapRequestRepository.findByBookUserUsernameAndStatus(username, SwapRequest.Status.COMPLETED));
         requests.addAll(swapRequestRepository.findByRequesterUsernameAndStatus(username, SwapRequest.Status.PENDING));
         requests.addAll(swapRequestRepository.findByRequesterUsernameAndStatus(username, SwapRequest.Status.ACCEPTED));
+        requests.addAll(swapRequestRepository.findByRequesterUsernameAndStatus(username, SwapRequest.Status.COMPLETED));
 
         List<Map<String, Object>> result = new ArrayList<>();
         for (SwapRequest req : requests) {

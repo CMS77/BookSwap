@@ -15,6 +15,7 @@ document.getElementById('chatWith').textContent = otherUser ? `with @${otherUser
 
 const messagesEl = document.getElementById('chatMessages');
 let lastMessageId = 0;
+let polling = false;
 
 function renderMessage(msg) {
     const isMine = msg.senderUsername === currentUser;
@@ -42,6 +43,8 @@ function scrollToBottom() {
 }
 
 async function pollMessages() {
+    if (polling) return;
+    polling = true;
     try {
         const url = lastMessageId > 0
             ? `/api/messages/${requestId}?since=${lastMessageId}`
@@ -62,7 +65,9 @@ async function pollMessages() {
         });
         localStorage.setItem(`chat_seen_${requestId}`, lastMessageId);
         scrollToBottom();
-    } catch (e) { }
+    } catch (e) { } finally {
+        polling = false;
+    }
 }
 
 // load history then start polling
