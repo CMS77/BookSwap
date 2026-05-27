@@ -1,3 +1,22 @@
+function isTokenExpired(token) {
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.exp * 1000 < Date.now();
+    } catch (e) {
+        return true;
+    }
+}
+
+function clearSession() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+}
+
+const _token = localStorage.getItem('token');
+if (_token && isTokenExpired(_token)) {
+    clearSession();
+}
+
 const isLoggedIn = !!localStorage.getItem('token');
 
 document.getElementById('navbar').innerHTML = `
@@ -90,15 +109,16 @@ document.querySelectorAll('.card-flip').forEach(card => {
 
 function checkAuth() {
     const token = localStorage.getItem('token');
-    if (!token) {
+    if (!token || isTokenExpired(token)) {
+        clearSession();
         window.location.href = 'login.html';
     }
     return token;
 }
 
-function authFetch(url, options = {}) {
+async function authFetch(url, options = {}) {
     const token = localStorage.getItem('token');
-    return fetch(url, {
+    const response = await fetch(url, {
         ...options,
         headers: {
             'Content-Type': 'application/json',
@@ -106,4 +126,10 @@ function authFetch(url, options = {}) {
             ...options.headers
         }
     });
+    if (response.status === 401) {
+        clearSession();
+        window.location.href = 'login.html';
+        return response;
+    }
+    return response;
 }

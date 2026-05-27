@@ -23,8 +23,6 @@ import com.happypotato.BookSwap.model.SwapRequest;
 import com.happypotato.BookSwap.model.User;
 import com.happypotato.BookSwap.security.JwtUtil;
 
-import java.util.Optional;
-
 @RestController
 public class BookController {
     private final BookRepository repository;
